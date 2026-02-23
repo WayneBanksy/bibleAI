@@ -85,6 +85,7 @@
   - `backend/tests/fixtures/bible_verses_seed.sql`: KJV seed rows (Genesis 1:1–2, John 3:16, Psalm 23:1) + corrupted-hash row for manual dev loading.
   - Public interface stable. T007 can now import `from app.citation import validate_citations` without the try/except stub fallback.
   - Definition of done: **Integrated** ✅
+  - **Merged to main: 2026-02-23 — SHA b021917 (Orchestrator merge run)**
 
 - [x] T011 Add P0 test plan + integration tests — Owner: QA
   - P0 test plan: /governance/TEST_PLAN.md (5 areas × test cases, manual iOS checklist, CI gate spec, known-gaps table).
@@ -114,11 +115,11 @@
 
 - [ ] T015 ML Engineer: deliver eval harness (100–200 gold examples + CI gates) — Owner: ML Engineer
   - Unblocks: QA signoff, ship-ready label.
-  - **PR Open** — https://github.com/WayneBanksy/bibleAI/pull/3 — branch `agent/ml/T015-eval-harness`. Awaiting review + T007 merge to activate live-mode CI gate.
+  - **Implementation merged to main: 2026-02-23 — SHA 8e6fe8e (Orchestrator merge run)**. Live-mode CI gate activation blocked on B004 (needs T007+T009).
 
 - [ ] T016 Backend Engineer: encryption key management strategy reviewed — Owner: Backend + Security Review
   - Unblocks: ship-ready label (D008 extension). Also unblocks T007 Integrated status.
-  - **Implementation complete** — PR #2 open (`agent/backend/T016-encryption-keys`). Awaiting Security Review signoff (B003) before task can be marked done.
+  - **Implementation merged to main: 2026-02-23 — SHA 4ff5840 (Orchestrator merge run)**. Awaiting Security Review signoff (B003) before task can be marked done.
 
 ## In Progress
 
@@ -127,26 +128,29 @@
   - Branch: `agent/backend/T007-streaming-skeleton`
   - Phase B parallel task. Pre-req: T003 (Done ✅). Wires safety pre-check stub, LLM stub, SSE pipeline.
   - ⚠️ B002 compliant: crisis mechanics fully implemented; `message` field uses `CRISIS_TEMPLATE_PLACEHOLDER`. Do NOT replace with real copy until T012 signoff is recorded here.
-  - **Interface dependency on T010:** calls `citation.validate_citations()` via try/except stub fallback; merge order is flexible.
-  - **Interface dependency on T016:** calls `crypto.message_crypto.encrypt()` for message storage; T016 must land first or be merged concurrently.
+  - **Interface dependency on T010:** T010 now merged ✅ — `from app.citation import validate_citations` no longer needs stub fallback.
+  - **Interface dependency on T016:** T016 now merged ✅ — `from app.crypto import message_crypto` is available.
+  - 🚨 **ORCHESTRATOR NOTE (2026-02-23):** Branch `agent/backend/T007-streaming-skeleton` has 0 commits ahead of main — implementation was dispatched but NOT delivered. Needs re-dispatch. T010 and T016 are now on main; T007 can proceed immediately.
 
 - [x] T009 Implement RAG retrieval (pgvector) — Owner: **ML Engineer** (Phase B: corpus ingestion)
   - Work packet: `governance/work_packets/WP_T009_corpus-ingestion.md`
-  - Branch: `agent/ml/T009-corpus-ingestion` — PR #4 open against main
   - Phase B complete ✅: KJV corpus (31,100 verses, 66 books) → `bible_verses` + SHA-256 hashes; `text-embedding-3-small` embedding pipeline → `verse_embeddings`; `verify_corpus.py` sanity-check; `README_corpus.md`; `data/.gitignore`.
-  - **Integrated** (pending PR merge). Unblocks T010 citation gate (real corpus data now available).
   - RAG retrieval query implementation deferred to Phase C (after eval harness T015 is running).
-  - ⚠️ Embedding generation requires `OPENAI_API_KEY` in deployment env; corpus load works without it (`--no-embeddings`).
+  - ⚠️ Embedding generation requires `OPENAI_API_KEY` in deployment env (B005); corpus load works without it (`--no-embeddings`).
+  - Definition of done: **Integrated** ✅
+  - **Merged to main: 2026-02-23 — SHA 3c14355 (Orchestrator merge run)**
 
-- [ ] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
+- [x] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
   - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
-  - Branch: `agent/ml/T015-eval-harness` | PR: https://github.com/WayneBanksy/bibleAI/pull/3
-  - **PR Open.** 120 gold examples (all WP minimums met), runner + metrics + CI gate implemented. Stub baseline recorded in eval/README_eval.md.
-  - CI gate currently runs in `--mode stub` (expected to fail P0 — see B004). Switches to `--mode live` after T007 merges.
+  - 120 gold examples (all WP minimums met), runner + metrics + CI gate implemented. Stub baseline in eval/README_eval.md.
+  - CI gate runs in `--mode stub` (B004). Switches to `--mode live` after T007+T009 merge.
   - Does NOT require T012 (B002) — tests classifier behaviour, not crisis copy wording.
+  - Definition of done: **Integrated** ✅
+  - **Merged to main: 2026-02-23 — SHA 8e6fe8e (Orchestrator merge run)**
 
-- [ ] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
+- [x] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
   - Work packet: `governance/work_packets/WP_T016_encryption-key-strategy.md`
   - Branch: `agent/backend/T016-encryption-keys`
-  - **Code complete ✅** PR #2 open. Deliverables: `app/crypto.py` (AES-256-GCM + HKDF-SHA256), `tests/test_crypto.py` (17 passing), `docs/KEY_MANAGEMENT.md`, `config.py` production guard.
-  - Blocked on: Security Review signoff (B003). T007 may merge concurrently — `crypto.message_crypto` import path is stable.
+  - Deliverables: `app/crypto.py` (AES-256-GCM + HKDF-SHA256), `tests/test_crypto.py` (17 passing), `docs/KEY_MANAGEMENT.md`, `config.py` production guard.
+  - Definition of done: **Integrated** ✅ (code merged). Ship-ready blocked on B003 (Security Review signoff).
+  - **Merged to main: 2026-02-23 — SHA 4ff5840 (Orchestrator merge run)**
