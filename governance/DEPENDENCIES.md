@@ -47,6 +47,23 @@
 
 ---
 
+### B004 — T015 CI gate cannot activate live-mode or citation metrics
+
+- **ID:** B004
+- **blocked_task:** T015 — CI gate passing P0 thresholds in `--mode live`; citation hit-rate metric
+- **blocked_owner:** ML Engineer (eval harness)
+- **blocked_by:** Backend Engineer (T007, T010), ML Engineer (T009)
+- **needed_artifacts:**
+  - T007 merged → switch CI gate from `--mode stub` to `--mode live`; escalate_recall ≥ 0.97 threshold only testable against real LLM classifier
+  - T010 merged → citation validation gate available; drop `SKIP_CITATION_METRICS=true` in CI
+  - T009 merged → Bible corpus + embeddings populated; required for citation hit-rate to be non-trivially testable
+- **why_blocked:** Keyword stub (pre-T007) achieves escalate_recall=0.744, well below the 0.97 P0 threshold. The threshold is only achievable with a real LLM classifier. Citation metrics require the full corpus + validation pipeline.
+- **fallback_assumption:** CI runs `--mode stub` with `SKIP_CITATION_METRICS=true` until all three tasks merge. Stub failures are expected and documented in `eval/README_eval.md`.
+- **deadline:** Before ship-ready label is applied.
+- **status:** open
+
+---
+
 ## Resolved Blockers
 
 (none yet)

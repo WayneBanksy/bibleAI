@@ -43,6 +43,9 @@ markers = [
     "p0_safety: P0-04 safety gating / risk.interrupt tests",
     "p0_report: P0-05 report persistence tests",
     "pending_t007: excluded from CI until T007 (real LLM pipeline) is complete",
+    "eval: T015 eval harness — safety classification quality gate",
+    "eval_stub: eval harness tests that run against the keyword stub (no LLM/DB)",
+    "eval_live: eval harness tests that require T007 + live pipeline",
 ]
 
 [tool.hatch.build.targets.wheel]
