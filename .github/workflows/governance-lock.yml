@@ -1,0 +1,24 @@
+name: Governance Lock Check
+
+on:
+  pull_request:
+
+jobs:
+  governance-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect forbidden governance edits
+        run: |
+          changed=$(git diff --name-only origin/main...HEAD)
+          echo "Changed files:"
+          echo "$changed"
+          
+          forbidden=$(echo "$changed" | grep -E "^governance/(INTERFACES|DECISIONS)\.md" || true)
+
+          if [ -n "$forbidden" ]; then
+            if [[ "${{ github.head_ref }}" != orchestrator/* ]]; then
+              echo "❌ Governance lock violated. Only orchestrator branches may edit INTERFACES.md or DECISIONS.md."
+              exit 1
+            fi
+          fi
