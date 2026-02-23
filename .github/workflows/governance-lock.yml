@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Detect forbidden governance edits
         run: |
           changed=$(git diff --name-only origin/main...HEAD)
