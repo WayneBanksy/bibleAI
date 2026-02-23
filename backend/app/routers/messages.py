@@ -20,7 +20,7 @@ from app.schemas import (
     SendMessageAccepted,
     SendMessageRequest,
 )
-from app.streaming import publish_demo_stream, sse_generator
+from app.streaming import publish_real_stream, sse_generator
 
 log = structlog.get_logger()
 router = APIRouter()
@@ -75,7 +75,7 @@ async def send_message(
         id=assistant_msg_id,
         session_id=session_id,
         role="assistant",
-        model_version="demo-stub-v0",
+        model_version="stub-v1",
     )
     db.add(assistant_msg)
 
@@ -102,8 +102,16 @@ async def send_message(
         client_message_id=str(body.client_message_id),
     )
 
-    # Kick off demo stream in the background — returns 202 immediately
-    background_tasks.add_task(publish_demo_stream, str(session_id), assistant_msg_id)
+    # Kick off real pipeline in the background — returns 202 immediately
+    background_tasks.add_task(
+        publish_real_stream,
+        str(session_id),
+        user_id,
+        user_msg.id,
+        assistant_msg_id,
+        body.text,
+        db,
+    )
 
     return SendMessageAccepted(
         message_id=assistant_msg_id,
