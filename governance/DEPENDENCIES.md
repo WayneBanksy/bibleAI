@@ -64,6 +64,20 @@
 
 ---
 
+### B005 — OPENAI_API_KEY must be provisioned in deployment environment before embedding generation
+
+- **ID:** B005
+- **blocked_task:** T009 embedding generation phase (verse_embeddings population)
+- **blocked_owner:** ML Engineer (script ready; awaiting key)
+- **blocked_by:** Backend Engineer / DevOps (key management)
+- **needed_artifact:** `OPENAI_API_KEY` set in the server environment (or secrets manager entry documented in T016 key management strategy). Backend Engineer to confirm where API keys are managed alongside T016 encryption key strategy.
+- **why_blocked:** `ingest_bible_corpus.py` without `--no-embeddings` calls the OpenAI API. Corpus load (`--no-embeddings`) and citation validation (T010) are NOT blocked — they work with the committed KJV JSON alone. Only the pgvector similarity-search path requires embeddings.
+- **fallback_assumption:** Run ingestion with `--no-embeddings` for all CI/dev work; defer embedding generation to staging/prod environment where key is available. RAG retrieval (Phase C) is already deferred to post-MVP.
+- **deadline:** Before Phase C (RAG retrieval query) is implemented; not a blocker for T010 or current MVP scope.
+- **status:** open
+
+---
+
 ## Resolved Blockers
 
 (none yet)

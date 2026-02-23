@@ -130,12 +130,13 @@
   - **Interface dependency on T010:** calls `citation.validate_citations()` via try/except stub fallback; merge order is flexible.
   - **Interface dependency on T016:** calls `crypto.message_crypto.encrypt()` for message storage; T016 must land first or be merged concurrently.
 
-- [ ] T009 Implement RAG retrieval (pgvector) — Owner: **ML Engineer** (Phase B: corpus ingestion)
+- [x] T009 Implement RAG retrieval (pgvector) — Owner: **ML Engineer** (Phase B: corpus ingestion)
   - Work packet: `governance/work_packets/WP_T009_corpus-ingestion.md`
-  - Branch: `agent/ml/T009-corpus-ingestion`
-  - Phase B scope: KJV corpus → `bible_verses` table + `text-embedding-3-small` embeddings → `verse_embeddings` table.
+  - Branch: `agent/ml/T009-corpus-ingestion` — PR #4 open against main
+  - Phase B complete ✅: KJV corpus (31,100 verses, 66 books) → `bible_verses` + SHA-256 hashes; `text-embedding-3-small` embedding pipeline → `verse_embeddings`; `verify_corpus.py` sanity-check; `README_corpus.md`; `data/.gitignore`.
+  - **Integrated** (pending PR merge). Unblocks T010 citation gate (real corpus data now available).
   - RAG retrieval query implementation deferred to Phase C (after eval harness T015 is running).
-  - Pre-req: T003 (Done ✅), D010 embedding spec (LOCKED ✅).
+  - ⚠️ Embedding generation requires `OPENAI_API_KEY` in deployment env; corpus load works without it (`--no-embeddings`).
 
 - [ ] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
   - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
