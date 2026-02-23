@@ -123,14 +123,13 @@
 
 ## In Progress
 
-- [ ] T007 Implement message send + streaming events — Owner: **Backend Engineer**
+- [x] T007 Implement message send + streaming events — Owner: **Backend Engineer**
   - Work packet: `governance/work_packets/WP_T007_streaming-skeleton.md`
   - Branch: `agent/backend/T007-streaming-skeleton`
-  - Phase B parallel task. Pre-req: T003 (Done ✅). Wires safety pre-check stub, LLM stub, SSE pipeline.
+  - Deliverables: `backend/app/safety.py` (KeywordSafetyClassifier + SafetyClassifier protocol), `backend/app/pipeline.py` (7-stage run_pipeline), `backend/app/streaming.py` (publish_real_stream wired), `backend/app/routers/messages.py` (background task → real pipeline), `backend/tests/test_streaming.py` (12 tests, all passing).
   - ⚠️ B002 compliant: crisis mechanics fully implemented; `message` field uses `CRISIS_TEMPLATE_PLACEHOLDER`. Do NOT replace with real copy until T012 signoff is recorded here.
-  - **Interface dependency on T010:** T010 now merged ✅ — `from app.citation import validate_citations` no longer needs stub fallback.
-  - **Interface dependency on T016:** T016 now merged ✅ — `from app.crypto import message_crypto` is available.
-  - 🚨 **ORCHESTRATOR NOTE (2026-02-23):** Branch `agent/backend/T007-streaming-skeleton` has 0 commits ahead of main — implementation was dispatched but NOT delivered. Needs re-dispatch. T010 and T016 are now on main; T007 can proceed immediately.
+  - Definition of done: **Integrated** ✅
+  - **Merged to main: 2026-02-23 — SHA c61ff09 (Orchestrator T007 re-dispatch)**
 
 - [x] T009 Implement RAG retrieval (pgvector) — Owner: **ML Engineer** (Phase B: corpus ingestion)
   - Work packet: `governance/work_packets/WP_T009_corpus-ingestion.md`
