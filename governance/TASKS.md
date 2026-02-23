@@ -72,21 +72,10 @@
 
 ## Backlog
 
-- [ ] T007 Implement message send + streaming events — Owner: Backend
-  - Pre-req: T003 complete (DONE). Wire real safety pre-check + LLM call + citation validation gate.
-
-- [ ] T009 Implement RAG retrieval (pgvector) — Owner: ML + Backend
-  - Pre-req: T003 scaffold complete. Bible corpus ingested.
-  - Embedding spec: LOCKED in DECISIONS.md D010 (`text-embedding-3-small`, 1536 dims, HNSW cosine). B001 resolved.
-  - Schema: `verse_embeddings` table + HNSW index DDL in INTERFACES.md §9.
-
 - [ ] T009-tune RAG retrieval parameter tuning — Owner: ML Engineer
   - Deferred to post-MVP (after eval harness is running).
   - Items to tune: `top_k_verses` (5–12), `top_k_devotionals` (3–8), rerank weights, `ef_search` (default 60), embedding model upgrade if quality insufficient.
   - Gate: ML Engineer eval harness (T015) must show recall metrics before changing defaults.
-
-- [ ] T010 Implement citation validation gate — Owner: Backend
-  - Pre-req: T003 complete + bible_verses table populated. Rules in INTERFACES.md §7.2.
 
 - [x] T011 Add P0 test plan + integration tests — Owner: QA
   - P0 test plan: /governance/TEST_PLAN.md (5 areas × test cases, manual iOS checklist, CI gate spec, known-gaps table).
@@ -99,6 +88,7 @@
   - P0-04 Safety/risk.interrupt: 6 tests — xfail(pending_t007): crisis input, LLM bypass, requires_acknowledgment=true, resources, medical advice refuse, post-crisis resume.
   - P0-05 Report: 6 tests (happy path, wrong-session 404, invalid reason 422, raw details not echoed, null details, all 4 reasons).
   - Known gaps documented in TEST_PLAN.md: P0-04 unblocked by T007+T012, DB-layer hash assertion requires admin endpoint, citation regression requires T010.
+  - Definition of done: **Integrated** ✅
 
 ---
 
@@ -115,10 +105,44 @@
 
 - [ ] T015 ML Engineer: deliver eval harness (100–200 gold examples + CI gates) — Owner: ML Engineer
   - Unblocks: QA signoff, ship-ready label.
+  - **In Progress** — see work packet + In Progress section above.
 
 - [ ] T016 Backend Engineer: encryption key management strategy reviewed — Owner: Backend + Security Review
-  - Unblocks: ship-ready label.
+  - Unblocks: ship-ready label (D008 extension). Also unblocks T007 Integrated status.
+  - **In Progress** — see work packet + In Progress section above. Security review signoff still required before ship-ready label.
 
 ## In Progress
 
-(none)
+- [ ] T007 Implement message send + streaming events — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_T007_streaming-skeleton.md`
+  - Branch: `agent/backend/T007-streaming-skeleton`
+  - Phase B parallel task. Pre-req: T003 (Done ✅). Wires safety pre-check stub, LLM stub, SSE pipeline.
+  - ⚠️ B002 compliant: crisis mechanics fully implemented; `message` field uses `CRISIS_TEMPLATE_PLACEHOLDER`. Do NOT replace with real copy until T012 signoff is recorded here.
+  - **Interface dependency on T010:** calls `citation.validate_citations()` via try/except stub fallback; merge order is flexible.
+  - **Interface dependency on T016:** calls `crypto.message_crypto.encrypt()` for message storage; T016 must land first or be merged concurrently.
+
+- [ ] T009 Implement RAG retrieval (pgvector) — Owner: **ML Engineer** (Phase B: corpus ingestion)
+  - Work packet: `governance/work_packets/WP_T009_corpus-ingestion.md`
+  - Branch: `agent/ml/T009-corpus-ingestion`
+  - Phase B scope: KJV corpus → `bible_verses` table + `text-embedding-3-small` embeddings → `verse_embeddings` table.
+  - RAG retrieval query implementation deferred to Phase C (after eval harness T015 is running).
+  - Pre-req: T003 (Done ✅), D010 embedding spec (LOCKED ✅).
+
+- [ ] T010 Implement citation validation gate — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_T010_citation-gate.md`
+  - Branch: `agent/backend/T010-citation-gate`
+  - Phase B parallel task. Creates `backend/app/citation.py` only. Does NOT modify `messages.py` or `pipeline.py` (T007 scope).
+  - Public interface: `validate_citations(verse_block, db) -> list[CitationResult]` — must be stable before T007 merges.
+
+- [ ] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
+  - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
+  - Branch: `agent/ml/T015-eval-harness`
+  - Phase B parallel task. Builds eval infrastructure + ≥110 gold examples + CI gate against keyword stub.
+  - CI gate switches to live-pipeline mode after T007 merges.
+  - Does NOT require T012 (B002) — tests classifier behaviour, not crisis copy wording.
+
+- [ ] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_T016_encryption-key-strategy.md`
+  - Branch: `agent/backend/T016-encryption-keys`
+  - Phase B parallel task. Implements `app/crypto.py` (AES-256-GCM per-user keys via HKDF) + key management design doc.
+  - Must land before T007 is marked Integrated (T007 calls `crypto.encrypt()`).
