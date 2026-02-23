@@ -1,0 +1,752 @@
+{
+  "builtTestProducts" : [
+    {
+      "binaryPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.xctest/Contents/MacOS/BibleTherapistPackageTests",
+      "packagePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios",
+      "productName" : "BibleTherapistPackageTests"
+    }
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.BibleTherapistCore-x86_64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/sources",
+      "importPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/AppModels.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/SSEEvent.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/AuthStore.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/SSEClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/ViewModels/ChatViewModel.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "BibleTherapistCore",
+      "moduleOutputPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCore.swiftmodule",
+      "objects" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AppModels.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEEvent.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/APIClient.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AuthStore.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEClient.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/ChatViewModel.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/include/BibleTherapistCore-Swift.h",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios"
+      ],
+      "outputFileMapPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AppModels.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEEvent.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/APIClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AuthStore.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/ChatViewModel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCore.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/AppModels.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/SSEEvent.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/APIClient.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/AuthStore.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/SSEClient.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/ViewModels/ChatViewModel.swift"
+      ],
+      "tempsPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.BibleTherapistCoreTests-x86_64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/sources",
+      "importPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/ChatViewModelTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/SSEParserTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCore.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "BibleTherapistCoreTests",
+      "moduleOutputPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCoreTests.swiftmodule",
+      "objects" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/ChatViewModelTests.swift.o",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/SSEParserTests.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios"
+      ],
+      "outputFileMapPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/ChatViewModelTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/SSEParserTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCoreTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/ChatViewModelTests.swift",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/SSEParserTests.swift"
+      ],
+      "tempsPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build",
+      "wholeModuleOptimization" : false
+    },
+    "C.BibleTherapistPackageTests-x86_64-apple-macosx15.0-debug.module" : {
+      "executable" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "fileList" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/sources",
+      "importPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistCoreTests.swiftmodule"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "BibleTherapistPackageTests",
+      "moduleOutputPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistPackageTests.swiftmodule",
+      "objects" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/runner.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-apple-macosx14.0",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-Xfrontend",
+        "-enable-cross-import-overlays",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/include/BibleTherapistPackageTests-Swift.h",
+        "-plugin-path",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+        "-sdk",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-F",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-I",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-L",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+        "-Xcc",
+        "-F",
+        "-Xcc",
+        "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "ios"
+      ],
+      "outputFileMapPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/runner.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules/BibleTherapistPackageTests.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift"
+      ],
+      "tempsPath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "BibleTherapistCore" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "BibleTherapistCore",
+      "-package-name",
+      "ios",
+      "-c",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/AppModels.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/SSEEvent.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/APIClient.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/AuthStore.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/SSEClient.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/ViewModels/ChatViewModel.swift",
+      "-I",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "-target",
+      "x86_64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/include/BibleTherapistCore-Swift.h",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "BibleTherapistCoreTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "BibleTherapistCoreTests",
+      "-package-name",
+      "ios",
+      "-c",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/ChatViewModelTests.swift",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/SSEParserTests.swift",
+      "-I",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "-target",
+      "x86_64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ],
+    "BibleTherapistPackageTests" : [
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc",
+      "-module-name",
+      "BibleTherapistPackageTests",
+      "-package-name",
+      "ios",
+      "-c",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift",
+      "-I",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/Modules",
+      "-target",
+      "x86_64-apple-macosx14.0",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-Xfrontend",
+      "-enable-cross-import-overlays",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/include/BibleTherapistPackageTests-Swift.h",
+      "-plugin-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing",
+      "-sdk",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-F",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-I",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-L",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks",
+      "-Xcc",
+      "-F",
+      "-Xcc",
+      "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "ios",
+      "-driver-use-frontend-path",
+      "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "BibleTherapistCore" : [
+
+    ],
+    "BibleTherapistCoreTests" : [
+      "BibleTherapistCore"
+    ],
+    "BibleTherapistPackageTests" : [
+      "BibleTherapistCoreTests",
+      "BibleTherapistCore"
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift" : {
+      "inputs" : [
+
+      ],
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift"
+        }
+      ]
+    }
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/AppModels.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Models/SSEEvent.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/APIClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/AuthStore.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/Networking/SSEClient.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Sources/BibleTherapistCore/ViewModels/ChatViewModel.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/sources"
+    },
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/ChatViewModelTests.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/Tests/BibleTherapistCoreTests/SSEParserTests.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/sources"
+    },
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.derived/runner.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/sources"
+    },
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/APIClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AppModels.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/AuthStore.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/ChatViewModel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEClient.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCore.build/SSEEvent.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/ChatViewModelTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistCoreTests.build/SSEParserTests.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.build/runner.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/BibleTherapistPackageTests.product/Objects.LinkFileList"
+    },
+    "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/waynebanksy/Documents/machine_learning/generative_ai_agents/bible-therapist-app/ios/.build/x86_64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+    }
+  }
+}
