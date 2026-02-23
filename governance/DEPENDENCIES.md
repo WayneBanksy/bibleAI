@@ -33,6 +33,20 @@
 
 ---
 
+### B003 — Security review signoff required for T016 key management design
+
+- **ID:** B003
+- **blocked_task:** T016 (ship-ready label); DECISIONS.md D008 final LOCKED status
+- **blocked_owner:** Backend Engineer
+- **blocked_by:** Security Reviewer
+- **needed_artifact:** Reviewer name + date recorded in `backend/docs/KEY_MANAGEMENT.md §6` (Security Review Signoff table). Summary note added to DECISIONS.md D008.
+- **why_blocked:** Per D008 policy, the AES-256-GCM key management design (HKDF derivation scheme, nonce management, rotation runbook) requires explicit security reviewer approval before the ship-ready label can be applied. Implementation is complete (PR #2); review is the only remaining gate.
+- **fallback_assumption:** None. No acceptable fallback. Ship is blocked until resolved.
+- **deadline:** Before ship-ready label is applied.
+- **status:** open
+
+---
+
 ## Resolved Blockers
 
 (none yet)

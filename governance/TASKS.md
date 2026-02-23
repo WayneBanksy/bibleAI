@@ -118,7 +118,7 @@
 
 - [ ] T016 Backend Engineer: encryption key management strategy reviewed — Owner: Backend + Security Review
   - Unblocks: ship-ready label (D008 extension). Also unblocks T007 Integrated status.
-  - **In Progress** — see work packet + In Progress section above. Security review signoff still required before ship-ready label.
+  - **Implementation complete** — PR #2 open (`agent/backend/T016-encryption-keys`). Awaiting Security Review signoff (B003) before task can be marked done.
 
 ## In Progress
 
@@ -147,5 +147,5 @@
 - [ ] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
   - Work packet: `governance/work_packets/WP_T016_encryption-key-strategy.md`
   - Branch: `agent/backend/T016-encryption-keys`
-  - Phase B parallel task. Implements `app/crypto.py` (AES-256-GCM per-user keys via HKDF) + key management design doc.
-  - Must land before T007 is marked Integrated (T007 calls `crypto.encrypt()`).
+  - **Code complete ✅** PR #2 open. Deliverables: `app/crypto.py` (AES-256-GCM + HKDF-SHA256), `tests/test_crypto.py` (17 passing), `docs/KEY_MANAGEMENT.md`, `config.py` production guard.
+  - Blocked on: Security Review signoff (B003). T007 may merge concurrently — `crypto.message_crypto` import path is stable.
