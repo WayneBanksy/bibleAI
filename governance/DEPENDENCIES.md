@@ -47,9 +47,9 @@
 
 ---
 
-### B003 — T015 CI gate cannot activate live-mode or citation metrics
+### B004 — T015 CI gate cannot activate live-mode or citation metrics
 
-- **ID:** B003
+- **ID:** B004
 - **blocked_task:** T015 — CI gate passing P0 thresholds in `--mode live`; citation hit-rate metric
 - **blocked_owner:** ML Engineer (eval harness)
 - **blocked_by:** Backend Engineer (T007, T010), ML Engineer (T009)

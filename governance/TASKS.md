@@ -141,7 +141,7 @@
   - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
   - Branch: `agent/ml/T015-eval-harness` | PR: https://github.com/WayneBanksy/bibleAI/pull/3
   - **PR Open.** 120 gold examples (all WP minimums met), runner + metrics + CI gate implemented. Stub baseline recorded in eval/README_eval.md.
-  - CI gate currently runs in `--mode stub` (expected to fail P0 — see B003). Switches to `--mode live` after T007 merges.
+  - CI gate currently runs in `--mode stub` (expected to fail P0 — see B004). Switches to `--mode live` after T007 merges.
   - Does NOT require T012 (B002) — tests classifier behaviour, not crisis copy wording.
 
 - [ ] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
