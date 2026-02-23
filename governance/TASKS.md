@@ -114,7 +114,7 @@
 
 - [ ] T015 ML Engineer: deliver eval harness (100–200 gold examples + CI gates) — Owner: ML Engineer
   - Unblocks: QA signoff, ship-ready label.
-  - **In Progress** — see work packet + In Progress section above.
+  - **PR Open** — https://github.com/WayneBanksy/bibleAI/pull/3 — branch `agent/ml/T015-eval-harness`. Awaiting review + T007 merge to activate live-mode CI gate.
 
 - [ ] T016 Backend Engineer: encryption key management strategy reviewed — Owner: Backend + Security Review
   - Unblocks: ship-ready label (D008 extension). Also unblocks T007 Integrated status.
@@ -139,9 +139,9 @@
 
 - [ ] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
   - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
-  - Branch: `agent/ml/T015-eval-harness`
-  - Phase B parallel task. Builds eval infrastructure + ≥110 gold examples + CI gate against keyword stub.
-  - CI gate switches to live-pipeline mode after T007 merges.
+  - Branch: `agent/ml/T015-eval-harness` | PR: https://github.com/WayneBanksy/bibleAI/pull/3
+  - **PR Open.** 120 gold examples (all WP minimums met), runner + metrics + CI gate implemented. Stub baseline recorded in eval/README_eval.md.
+  - CI gate currently runs in `--mode stub` (expected to fail P0 — see B003). Switches to `--mode live` after T007 merges.
   - Does NOT require T012 (B002) — tests classifier behaviour, not crisis copy wording.
 
 - [ ] T016 Backend Engineer: encryption key management strategy — Owner: **Backend Engineer**
