@@ -39,6 +39,32 @@ def _sse(event: str, data: str | dict) -> str:
     return f"event: {event}\ndata: {payload}\n\n"
 
 
+async def publish_real_stream(
+    session_id: str,
+    user_id: uuid.UUID,
+    user_message_id: uuid.UUID,
+    assistant_message_id: uuid.UUID,
+    text: str,
+    db,  # AsyncSession — imported lazily to avoid circular import
+) -> None:
+    """
+    Background task: run the real pipeline and stream events into the session queue.
+    Called after POST /v1/sessions/{id}/messages returns 202.
+    """
+    from app.pipeline import run_pipeline  # lazy import to avoid circular
+
+    q = _queue(session_id)
+    await run_pipeline(
+        session_id=uuid.UUID(session_id),
+        user_id=user_id,
+        user_message_id=user_message_id,
+        assistant_message_id=assistant_message_id,
+        text=text,
+        db=db,
+        queue=q,
+    )
+
+
 async def publish_demo_stream(session_id: str, message_id: uuid.UUID) -> None:
     """
     Background task: emit token.delta events then a message.final event.
