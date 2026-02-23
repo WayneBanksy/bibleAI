@@ -77,6 +77,15 @@
   - Items to tune: `top_k_verses` (5–12), `top_k_devotionals` (3–8), rerank weights, `ef_search` (default 60), embedding model upgrade if quality insufficient.
   - Gate: ML Engineer eval harness (T015) must show recall metrics before changing defaults.
 
+- [x] T010 Implement citation validation gate — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_T010_citation-gate.md`
+  - Branch: `agent/backend/T010-citation-gate`
+  - `backend/app/citation.py`: `CitationResult` dataclass + `validate_citations(verse_block, db) -> list[CitationResult]`. Five-step validation: guard → range check → DB lookup → not-found → SHA-256 hash check (all-or-nothing per citation). Never raises.
+  - `backend/tests/test_citation.py`: 15 tests covering all acceptance criteria (empty list, happy-path single/range, not-found, range-invalid, hash-mismatch, mixed batch, malformed input, verse_end default).
+  - `backend/tests/fixtures/bible_verses_seed.sql`: KJV seed rows (Genesis 1:1–2, John 3:16, Psalm 23:1) + corrupted-hash row for manual dev loading.
+  - Public interface stable. T007 can now import `from app.citation import validate_citations` without the try/except stub fallback.
+  - Definition of done: **Integrated** ✅
+
 - [x] T011 Add P0 test plan + integration tests — Owner: QA
   - P0 test plan: /governance/TEST_PLAN.md (5 areas × test cases, manual iOS checklist, CI gate spec, known-gaps table).
   - Pytest integration skeleton: /backend/tests/test_p0_integration.py (30 tests, 0 failures on collection).
@@ -127,12 +136,6 @@
   - Phase B scope: KJV corpus → `bible_verses` table + `text-embedding-3-small` embeddings → `verse_embeddings` table.
   - RAG retrieval query implementation deferred to Phase C (after eval harness T015 is running).
   - Pre-req: T003 (Done ✅), D010 embedding spec (LOCKED ✅).
-
-- [ ] T010 Implement citation validation gate — Owner: **Backend Engineer**
-  - Work packet: `governance/work_packets/WP_T010_citation-gate.md`
-  - Branch: `agent/backend/T010-citation-gate`
-  - Phase B parallel task. Creates `backend/app/citation.py` only. Does NOT modify `messages.py` or `pipeline.py` (T007 scope).
-  - Public interface: `validate_citations(verse_block, db) -> list[CitationResult]` — must be stable before T007 merges.
 
 - [ ] T015 ML Engineer: deliver eval harness — Owner: **ML Engineer**
   - Work packet: `governance/work_packets/WP_T015_eval-harness.md`
