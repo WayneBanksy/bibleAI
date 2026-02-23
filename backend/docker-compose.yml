@@ -23,6 +23,8 @@ services:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/bible_therapist
       JWT_SECRET_KEY: dev-secret-change-in-production
       ENVIRONMENT: development
+      # INSECURE: dev only. Never use this value in production.
+      MASTER_KEY_SECRET: dev-insecure-local-only
     depends_on:
       postgres:
         condition: service_healthy
