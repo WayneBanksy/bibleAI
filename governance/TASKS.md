@@ -121,6 +121,83 @@
   - Unblocks: ship-ready label (D008 extension). Also unblocks T007 Integrated status.
   - **Implementation merged to main: 2026-02-23 — SHA 4ff5840 (Orchestrator merge run)**. Awaiting Security Review signoff (B003) before task can be marked done.
 
+---
+
+## Next Sprint — Monetization + WWJD Premium + Analytics
+
+### Batch A (parallel — no inter-dependencies)
+
+- [ ] P1-01 Subscription & Entitlements — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_P1_01_subscription-entitlements_backend.md`
+  - Branch: `agent/backend/P1-01-subscription-entitlements`
+  - Deliverables: entitlements snapshot service, GET /v1/entitlements, quota enforcement (402 PAYWALL_REQUIRED), Alembic migration (subscription fields on users).
+  - Dependencies: Auth (exists), Alembic (exists). P1-02 integrates later (credits_balance default 0).
+  - Definition of done: **Pending**
+
+- [ ] P1-02 Credit System — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_P1_02_credit-system_backend.md`
+  - Branch: `agent/backend/P1-02-credits`
+  - Deliverables: credit_ledger table, POST /v1/credits/redeem (idempotent), atomic consume_credit_if_needed hook, Alembic migration.
+  - Dependencies: Auth (exists). P1-01 optional (credits_balance field added here if needed).
+  - Definition of done: **Pending**
+
+- [ ] P2-01 WWJD Mode — Owner: **ML Engineer**
+  - Work packet: `governance/work_packets/WP_P2_01_wwjd-mode_ml.md`
+  - Branch: `agent/ml/P2-01-wwjd-mode`
+  - Deliverables: WWJD system prompt, structured output schema (devotional + verse_block + action_steps), safety override logic, tests.
+  - Dependencies: Safety taxonomy (exists), citation gate T010 (exists).
+  - Definition of done: **Pending**
+
+- [ ] P1-05 Analytics Events (Backend portion) — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_P1_05_analytics-events_backend_ios.md`
+  - Branch: `agent/backend/P1-05-analytics`
+  - Deliverables: analytics_events table, POST /v1/analytics/event (allowlisted), GET /v1/analytics/summary (dev-only), Alembic migration, tests.
+  - Dependencies: Auth (exists).
+  - Definition of done: **Pending**
+
+### Batch B (after P1-01 endpoints exist)
+
+- [ ] P1-03 StoreKit Integration — Owner: **iOS Engineer**
+  - Work packet: `governance/work_packets/WP_P1_03_storekit-integration_ios.md`
+  - Branch: `agent/ios/P1-03-storekit`
+  - Deliverables: StoreKitManager, PaywallView, EntitlementsStore, credits redeem flow, restore purchases.
+  - Dependencies: P1-01 (GET /v1/entitlements), P1-02 (POST /v1/credits/redeem).
+  - Definition of done: **Pending**
+
+- [ ] P1-04 App Store Receipt Verification — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_P1_04_appstore-receipt-verification_backend.md`
+  - Branch: `agent/backend/P1-04-appstore-verify`
+  - Deliverables: iap_transactions table, POST /v1/iap/verify, POST /v1/iap/sync, pluggable IAPVerifier (DevStub + Production), subscription sync, tests.
+  - Dependencies: P1-01 (subscription fields on users).
+  - Definition of done: **Pending**
+
+### Batch C (after P1-01 + P2-01)
+
+- [ ] P2-02 WWJD Entitlement Gate — Owner: **Backend Engineer**
+  - Work packet: `governance/work_packets/WP_P2_02_wwjd-entitlement-gate_backend.md`
+  - Branch: `agent/backend/P2-02-wwjd-gate`
+  - Deliverables: locked_content table, locked response behavior, GET /v1/locked/{id} unlock endpoint, tests.
+  - Dependencies: P1-01 (wwjd_enabled), P2-01 (WWJD structured output schema).
+  - Definition of done: **Pending**
+
+### Batch D (after P1-03 + P2-02)
+
+- [ ] P2-03 WWJD Blur Overlay — Owner: **iOS Engineer**
+  - Work packet: `governance/work_packets/WP_P2_03_wwjd-blur-overlay_ios.md`
+  - Branch: `agent/ios/P2-03-wwjd-overlay`
+  - Deliverables: mode toggle (Default | WWJD), blurred preview bubble, paywall overlay, unlock fetch + render, tests.
+  - Dependencies: P1-03 (paywall exists), P2-02 (locked response + /v1/locked/{id}).
+  - Definition of done: **Pending**
+
+- [ ] P1-05 Analytics Events (iOS portion) — Owner: **iOS Engineer**
+  - Work packet: `governance/work_packets/WP_P1_05_analytics-events_backend_ios.md`
+  - Branch: `agent/ios/P1-05-analytics`
+  - Deliverables: AnalyticsClient, fire-and-forget event hooks (paywall, credits, WWJD, quota), integration with PaywallView + ChatViewModel + StoreKitManager.
+  - Dependencies: P1-05 backend (POST /v1/analytics/event), P1-03 (paywall views), P2-03 (WWJD views).
+  - Definition of done: **Pending**
+
+---
+
 ## In Progress
 
 - [x] T007 Implement message send + streaming events — Owner: **Backend Engineer**
