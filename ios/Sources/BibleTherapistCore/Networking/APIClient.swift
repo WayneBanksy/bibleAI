@@ -12,6 +12,7 @@ public enum APIClientError: Error, Sendable, LocalizedError {
     case conflict(originalMessageId: UUID?)
     case validationError
     case rateLimited
+    case paywallRequired(String?)
     case serverError(String)
     case decodingError(Error)
     case networkError(Error)
@@ -22,6 +23,7 @@ public enum APIClientError: Error, Sendable, LocalizedError {
         case .forbidden:                  return "Access denied."
         case .notFound:                   return "Resource not found."
         case .conflict:                   return "Duplicate message — already processing."
+        case .paywallRequired(let r):     return r ?? "Upgrade or purchase credits to continue."
         case .validationError:            return "Invalid request."
         case .rateLimited:                return "Too many requests. Please wait a moment."
         case .serverError(let msg):       return msg
@@ -170,6 +172,145 @@ public final class APIClient: SessionServiceProtocol, @unchecked Sendable {
         return ["Authorization": "Bearer \(token)"]
     }
 
+    // MARK: - Entitlements (P1-01)
+
+    public func getEntitlements() async throws -> EntitlementsResponse {
+        return try await get(path: "/v1/entitlements")
+    }
+
+    // MARK: - Credits (P1-02)
+
+    public func redeemCredits(
+        idempotencyKey: String,
+        productId: String,
+        purchaseToken: String,
+        purchasedAt: Date
+    ) async throws -> RedeemCreditsResponse {
+        struct Body: Encodable {
+            let idempotency_key: String
+            let product_id: String
+            let purchase_token: String
+            let purchased_at: String
+        }
+        let formatter = ISO8601DateFormatter()
+        return try await post(
+            path: "/v1/credits/redeem",
+            body: Body(
+                idempotency_key: idempotencyKey,
+                product_id: productId,
+                purchase_token: purchaseToken,
+                purchased_at: formatter.string(from: purchasedAt)
+            )
+        )
+    }
+
+    // MARK: - IAP Verification (P1-04)
+
+    public func verifyIAP(
+        productType: String,
+        productId: String,
+        transactionId: String,
+        originalTransactionId: String? = nil,
+        environment: String = "Sandbox",
+        signedTransactionJWS: String? = nil,
+        signedRenewalInfoJWS: String? = nil
+    ) async throws -> IAPVerifyResponse {
+        struct Body: Encodable {
+            let platform = "appstore"
+            let product_type: String
+            let product_id: String
+            let transaction_id: String
+            let original_transaction_id: String?
+            let environment: String
+            let signed_transaction_jws: String?
+            let signed_renewal_info_jws: String?
+        }
+        return try await post(
+            path: "/v1/iap/verify",
+            body: Body(
+                product_type: productType,
+                product_id: productId,
+                transaction_id: transactionId,
+                original_transaction_id: originalTransactionId,
+                environment: environment,
+                signed_transaction_jws: signedTransactionJWS,
+                signed_renewal_info_jws: signedRenewalInfoJWS
+            )
+        )
+    }
+
+    public func syncIAP(
+        productType: String,
+        productId: String,
+        transactionId: String,
+        originalTransactionId: String? = nil,
+        environment: String = "Sandbox",
+        signedTransactionJWS: String? = nil,
+        signedRenewalInfoJWS: String? = nil
+    ) async throws -> IAPVerifyResponse {
+        struct Body: Encodable {
+            let platform = "appstore"
+            let product_type: String
+            let product_id: String
+            let transaction_id: String
+            let original_transaction_id: String?
+            let environment: String
+            let signed_transaction_jws: String?
+            let signed_renewal_info_jws: String?
+        }
+        return try await post(
+            path: "/v1/iap/sync",
+            body: Body(
+                product_type: productType,
+                product_id: productId,
+                transaction_id: transactionId,
+                original_transaction_id: originalTransactionId,
+                environment: environment,
+                signed_transaction_jws: signedTransactionJWS,
+                signed_renewal_info_jws: signedRenewalInfoJWS
+            )
+        )
+    }
+
+    // MARK: - Generic GET
+
+    private func get<ResponseBody: Decodable>(
+        path: String,
+        requiresAuth: Bool = true
+    ) async throws -> ResponseBody {
+        guard let url = URL(string: path, relativeTo: baseURL) else {
+            throw APIClientError.networkError(URLError(.badURL))
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(UUID().uuidString, forHTTPHeaderField: "X-Request-ID")
+
+        if requiresAuth, let token = authToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await urlSession.data(for: request)
+        } catch {
+            throw APIClientError.networkError(error)
+        }
+
+        guard let http = response as? HTTPURLResponse else {
+            throw APIClientError.networkError(URLError(.badServerResponse))
+        }
+
+        try throwIfHTTPError(statusCode: http.statusCode, data: data)
+
+        do {
+            return try decoder.decode(ResponseBody.self, from: data)
+        } catch {
+            throw APIClientError.decodingError(error)
+        }
+    }
+
     // MARK: - Generic POST
 
     private func post<RequestBody: Encodable, ResponseBody: Decodable>(
@@ -226,6 +367,12 @@ public final class APIClient: SessionServiceProtocol, @unchecked Sendable {
         switch statusCode {
         case 401:
             throw APIClientError.unauthenticated
+        case 402:
+            struct PaywallDetail: Codable { let reason: String? }
+            struct PaywallError: Codable { let error: PaywallDetail? }
+            struct PaywallWrapper: Codable { let detail: PaywallError? }
+            let reason = try? decoder.decode(PaywallWrapper.self, from: data).detail?.error?.reason
+            throw APIClientError.paywallRequired(reason)
         case 403:
             throw APIClientError.forbidden
         case 404:

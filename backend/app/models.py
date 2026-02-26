@@ -52,6 +52,7 @@ class User(Base):
     sessions: Mapped[list["Session"]] = relationship(back_populates="user")
     reports: Mapped[list["Report"]] = relationship(back_populates="user")
     credit_ledger_entries: Mapped[list["CreditLedger"]] = relationship(back_populates="user")
+    iap_transactions: Mapped[list["IAPTransaction"]] = relationship(back_populates="user")
 
 
 class Consent(Base):
@@ -237,6 +238,38 @@ class CreditLedger(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
 
     user: Mapped["User"] = relationship(back_populates="credit_ledger_entries")
+
+
+class IAPTransaction(Base):
+    __tablename__ = "iap_transactions"
+    __table_args__ = (
+        CheckConstraint(
+            "product_type IN ('subscription', 'consumable')",
+            name="ck_iap_transactions_product_type",
+        ),
+        CheckConstraint(
+            "environment IN ('Sandbox', 'Production')",
+            name="ck_iap_transactions_environment",
+        ),
+        UniqueConstraint("platform", "transaction_id", name="uq_iap_transactions_platform_txn"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    platform: Mapped[str] = mapped_column(Text, nullable=False, default="appstore")
+    transaction_id: Mapped[str] = mapped_column(Text, nullable=False)
+    original_transaction_id: Mapped[str | None] = mapped_column(Text, nullable=True)
+    product_id: Mapped[str] = mapped_column(Text, nullable=False)
+    product_type: Mapped[str] = mapped_column(Text, nullable=False)
+    signed_transaction_jws: Mapped[str | None] = mapped_column(Text, nullable=True)
+    signed_renewal_info_jws: Mapped[str | None] = mapped_column(Text, nullable=True)
+    verified_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    revocation_date: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    environment: Mapped[str] = mapped_column(Text, nullable=False, default="Sandbox")
+    raw_payload: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+
+    user: Mapped["User"] = relationship(back_populates="iap_transactions")
 
 
 class AnalyticsEvent(Base):

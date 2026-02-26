@@ -218,6 +218,59 @@ public struct ReportResponse: Codable, Sendable {
     }
 }
 
+// MARK: - Entitlements (P1-01)
+
+public struct EntitlementsSnapshot: Codable, Sendable {
+    public let subscriptionTier: String
+    public let subscriptionStatus: String
+    public let subscriptionExpiresAt: String?
+    public let wwjdEnabled: Bool
+    public let creditsBalance: Int
+    public let freeSessionsRemaining: Int?
+    public let plusSessionsRemainingToday: Int?
+    public let plusSessionsRemainingWeek: Int?
+    public let canStartSessionNow: Bool
+    public let nextResetAt: String?
+    public let blockingReason: String?
+
+    enum CodingKeys: String, CodingKey {
+        case subscriptionTier = "subscription_tier"
+        case subscriptionStatus = "subscription_status"
+        case subscriptionExpiresAt = "subscription_expires_at"
+        case wwjdEnabled = "wwjd_enabled"
+        case creditsBalance = "credits_balance"
+        case freeSessionsRemaining = "free_sessions_remaining"
+        case plusSessionsRemainingToday = "plus_sessions_remaining_today"
+        case plusSessionsRemainingWeek = "plus_sessions_remaining_week"
+        case canStartSessionNow = "can_start_session_now"
+        case nextResetAt = "next_reset_at"
+        case blockingReason = "blocking_reason"
+    }
+}
+
+public struct EntitlementsResponse: Codable, Sendable {
+    public let entitlements: EntitlementsSnapshot
+}
+
+// MARK: - Credits (P1-02)
+
+public struct RedeemCreditsResponse: Codable, Sendable {
+    public let creditsBalance: Int
+    public let added: Int
+
+    enum CodingKeys: String, CodingKey {
+        case creditsBalance = "credits_balance"
+        case added
+    }
+}
+
+// MARK: - IAP Verification (P1-04)
+
+public struct IAPVerifyResponse: Codable, Sendable {
+    public let entitlements: EntitlementsSnapshot
+    public let verified: Bool
+}
+
 // MARK: - Error
 
 public struct APIErrorBody: Codable, Sendable {

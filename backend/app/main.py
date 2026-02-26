@@ -13,6 +13,7 @@ Routers:
   /v1/entitlements — subscription entitlements snapshot
   /v1/credits      — credit redemption
   /v1/analytics    — analytics event ingestion
+  /v1/iap          — IAP transaction verification + subscription sync
 """
 import uuid
 from contextlib import asynccontextmanager
@@ -23,7 +24,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.logger import configure_logging, log
-from app.routers import analytics, auth, credits, entitlements, messages, safety, sessions
+from app.routers import analytics, auth, credits, entitlements, iap, messages, safety, sessions
 
 configure_logging()
 
@@ -72,6 +73,7 @@ app.include_router(safety.router, prefix="/v1/safety", tags=["safety"])
 app.include_router(entitlements.router, prefix="/v1", tags=["entitlements"])
 app.include_router(credits.router, prefix="/v1", tags=["credits"])
 app.include_router(analytics.router, prefix="/v1", tags=["analytics"])
+app.include_router(iap.router, prefix="/v1", tags=["iap"])
 
 
 @app.get("/health", tags=["ops"])

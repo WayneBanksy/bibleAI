@@ -1,4 +1,0 @@
-# Licensed translation source files must NOT be committed.
-# Only kjv_public_domain.json (public domain) is committed.
-*.json
-!kjv_public_domain.json

@@ -214,6 +214,26 @@ class RedeemCreditsResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# IAP Verification (P1-04)
+# ---------------------------------------------------------------------------
+
+class IAPVerifyRequest(BaseModel):
+    platform: Literal["appstore"] = "appstore"
+    product_type: Literal["subscription", "consumable"]
+    product_id: str
+    transaction_id: str
+    original_transaction_id: str | None = None
+    environment: Literal["Sandbox", "Production"] = "Sandbox"
+    signed_transaction_jws: str | None = None
+    signed_renewal_info_jws: str | None = None
+
+
+class IAPVerifyResponse(BaseModel):
+    entitlements: EntitlementsSnapshot
+    verified: bool
+
+
+# ---------------------------------------------------------------------------
 # Analytics (P1-05)
 # ---------------------------------------------------------------------------
 
