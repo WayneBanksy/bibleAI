@@ -173,3 +173,61 @@ class ErrorDetail(BaseModel):
 
 class ErrorResponse(BaseModel):
     error: ErrorDetail
+
+
+# ---------------------------------------------------------------------------
+# Entitlements (P1-01)
+# ---------------------------------------------------------------------------
+
+class EntitlementsSnapshot(BaseModel):
+    subscription_tier: str
+    subscription_status: str
+    subscription_expires_at: str | None = None
+    wwjd_enabled: bool
+    credits_balance: int
+    free_sessions_remaining: int | None = None
+    plus_sessions_remaining_today: int | None = None
+    plus_sessions_remaining_week: int | None = None
+    can_start_session_now: bool
+    next_reset_at: str | None = None
+    blocking_reason: str | None = None
+
+
+class EntitlementsResponse(BaseModel):
+    entitlements: EntitlementsSnapshot
+
+
+# ---------------------------------------------------------------------------
+# Credits (P1-02)
+# ---------------------------------------------------------------------------
+
+class RedeemCreditsRequest(BaseModel):
+    idempotency_key: str
+    product_id: str
+    purchase_token: str
+    purchased_at: str
+
+
+class RedeemCreditsResponse(BaseModel):
+    credits_balance: int
+    added: int
+
+
+# ---------------------------------------------------------------------------
+# Analytics (P1-05)
+# ---------------------------------------------------------------------------
+
+class AnalyticsEventRequest(BaseModel):
+    event_name: str
+    timestamp: str
+    session_id: str | None = None
+    properties: dict = {}
+
+
+class AnalyticsEventAccepted(BaseModel):
+    accepted: bool = True
+
+
+class AnalyticsSummaryResponse(BaseModel):
+    window_days: int
+    counts: dict[str, int]

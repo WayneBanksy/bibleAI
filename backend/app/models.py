@@ -40,8 +40,18 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
     consent_accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
+    # Subscription & monetization (P1-01, P1-02)
+    subscription_tier: Mapped[str] = mapped_column(Text, nullable=False, default="free")
+    subscription_source: Mapped[str | None] = mapped_column(Text, nullable=True)
+    subscription_status: Mapped[str] = mapped_column(Text, nullable=False, default="inactive")
+    subscription_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    free_quota_window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+    free_sessions_used: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    credits_balance: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
     sessions: Mapped[list["Session"]] = relationship(back_populates="user")
     reports: Mapped[list["Report"]] = relationship(back_populates="user")
+    credit_ledger_entries: Mapped[list["CreditLedger"]] = relationship(back_populates="user")
 
 
 class Consent(Base):
@@ -199,6 +209,45 @@ class SafetyEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
 
     message: Mapped["Message"] = relationship(back_populates="safety_events")
+
+
+class CreditLedger(Base):
+    __tablename__ = "credit_ledger"
+    __table_args__ = (
+        CheckConstraint(
+            "reason IN ('iap_redeem', 'session_consume', 'admin_adjust')",
+            name="ck_credit_ledger_reason",
+        ),
+        Index(
+            "ix_credit_ledger_idempotency",
+            "user_id",
+            "idempotency_key",
+            unique=True,
+            postgresql_where=text("idempotency_key IS NOT NULL"),
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    delta: Mapped[int] = mapped_column(Integer, nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    idempotency_key: Mapped[str | None] = mapped_column(Text, nullable=True)
+    product_id: Mapped[str | None] = mapped_column(Text, nullable=True)
+    related_session_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+
+    user: Mapped["User"] = relationship(back_populates="credit_ledger_entries")
+
+
+class AnalyticsEvent(Base):
+    __tablename__ = "analytics_events"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    event_name: Mapped[str] = mapped_column(Text, nullable=False)
+    session_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+    properties: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
 
 
 class Report(Base):
