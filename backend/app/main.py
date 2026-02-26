@@ -6,10 +6,13 @@ Middleware applied (in order):
   2. Structured log context — binds request_id to every log line in the request
 
 Routers:
-  /v1/auth      — token exchange (Apple stub in dev)
-  /v1/sessions  — session CRUD
-  /v1/sessions  — message send + SSE stream (same prefix, different paths)
-  /v1/safety    — safety report submission
+  /v1/auth         — token exchange (Apple stub in dev)
+  /v1/sessions     — session CRUD
+  /v1/sessions     — message send + SSE stream (same prefix, different paths)
+  /v1/safety       — safety report submission
+  /v1/entitlements — subscription entitlements snapshot
+  /v1/credits      — credit redemption
+  /v1/analytics    — analytics event ingestion
 """
 import uuid
 from contextlib import asynccontextmanager
@@ -20,7 +23,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.logger import configure_logging, log
-from app.routers import auth, messages, safety, sessions
+from app.routers import analytics, auth, credits, entitlements, messages, safety, sessions
 
 configure_logging()
 
@@ -66,6 +69,9 @@ app.include_router(auth.router, prefix="/v1/auth", tags=["auth"])
 app.include_router(sessions.router, prefix="/v1/sessions", tags=["sessions"])
 app.include_router(messages.router, prefix="/v1/sessions", tags=["messages"])
 app.include_router(safety.router, prefix="/v1/safety", tags=["safety"])
+app.include_router(entitlements.router, prefix="/v1", tags=["entitlements"])
+app.include_router(credits.router, prefix="/v1", tags=["credits"])
+app.include_router(analytics.router, prefix="/v1", tags=["analytics"])
 
 
 @app.get("/health", tags=["ops"])

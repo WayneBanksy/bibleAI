@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     # The application MUST NOT start in production if this is empty or missing.
     master_key_secret: str = Field(default=_DEV_MASTER_KEY_SECRET)
 
+    # Entitlement quotas (P1-01)
+    free_sessions_per_week: int = 3
+    plus_sessions_per_day: int = 2
+    plus_sessions_per_week: int = 10
+    quota_reset_days: int = 7
+
     @field_validator("master_key_secret", mode="after")
     @classmethod
     def _validate_master_key_secret(cls, v: str, info) -> str:
