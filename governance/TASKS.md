@@ -157,19 +157,35 @@
 
 ### Batch B (after P1-01 endpoints exist)
 
-- [ ] P1-03 StoreKit Integration — Owner: **iOS Engineer**
-  - Work packet: `governance/work_packets/WP_P1_03_storekit-integration_ios.md`
-  - Branch: `agent/ios/P1-03-storekit`
-  - Deliverables: StoreKitManager, PaywallView, EntitlementsStore, credits redeem flow, restore purchases.
-  - Dependencies: P1-01 (GET /v1/entitlements), P1-02 (POST /v1/credits/redeem).
-  - Definition of done: **Pending**
-
-- [ ] P1-04 App Store Receipt Verification — Owner: **Backend Engineer**
+- [x] P1-04 App Store Receipt Verification — Owner: **Backend Engineer**
   - Work packet: `governance/work_packets/WP_P1_04_appstore-receipt-verification_backend.md`
-  - Branch: `agent/backend/P1-04-appstore-verify`
-  - Deliverables: iap_transactions table, POST /v1/iap/verify, POST /v1/iap/sync, pluggable IAPVerifier (DevStub + Production), subscription sync, tests.
-  - Dependencies: P1-01 (subscription fields on users).
-  - Definition of done: **Pending**
+  - Branch: `main` (direct commit)
+  - Deliverables:
+    - Alembic migration `0005_iap_transactions.py`: iap_transactions table with UNIQUE(platform, transaction_id), check constraints on product_type and environment.
+    - `backend/app/services/iap_verification.py`: pluggable `IAPVerifier` interface with `DevStubVerifier` (dev) and `ProductionVerifier` (Apple API placeholder); `verify_and_record()` with idempotency on (platform, transaction_id).
+    - `backend/app/services/subscription_sync.py`: `sync_subscription_from_transaction()` (deterministic tier/status/expires_at update), `enforce_subscription_expiry()` (MVP on-read downgrade).
+    - `backend/app/routers/iap.py`: POST /v1/iap/verify + POST /v1/iap/sync (expiry enforcement on sync).
+    - ORM: IAPTransaction model + User.iap_transactions relationship.
+    - `backend/app/schemas.py`: IAPVerifyRequest, IAPVerifyResponse.
+    - Tests: **7/7 unit tests passing** (subscription activation, expiry, revocation, enforce expiry scenarios). 8 integration tests written (require Postgres): verify sub/consumable, idempotency, unauthenticated, invalid type, multiple subs, sync endpoint, sync unauth.
+  - ⚠️ ProductionVerifier raises NotImplementedError — requires Apple API credentials (B005-adjacent). DevStubVerifier must NEVER be active in production (gated behind `is_dev`).
+  - Definition of done: **Draft** ✅ — Integration tests require Postgres. ProductionVerifier requires Apple API key provisioning.
+  - **Commit: 8aa5aa4 on main (2026-02-25)**
+
+- [x] P1-03 StoreKit Integration — Owner: **iOS Engineer**
+  - Work packet: `governance/work_packets/WP_P1_03_storekit-integration_ios.md`
+  - Branch: `main` (direct commit)
+  - Deliverables:
+    - `ios/Sources/BibleTherapistCore/Store/ProductIDs.swift`: centralized product IDs (2 subscriptions: plus_monthly, plus_annual; 4 credit packs: credits_5/10/30/50).
+    - `ios/Sources/BibleTherapistCore/Store/StoreKitManager.swift`: StoreKit 2 `Product.purchase()`, transaction listener (`Transaction.updates`), restore via `AppStore.sync()` + `Transaction.currentEntitlements`, backend sync for subscriptions (verifyIAP) and credits (redeemCredits). Credit restores do NOT re-redeem (per spec).
+    - `ios/Sources/BibleTherapistCore/Store/EntitlementsStore.swift`: `@MainActor ObservableObject` with `refresh()` → GET /v1/entitlements; derived state: `isPlusActive`, `wwjdEnabled`, `creditsBalance`, `canStartSession`, `blockingReason`.
+    - `ios/Sources/BibleTherapistCore/Views/PaywallView.swift`: feature comparison (Free vs Plus), subscription CTAs, credit pack CTAs, restore button, blocking reason display.
+    - `ios/Sources/BibleTherapistCore/Models/AppModels.swift`: added `EntitlementsSnapshot`, `EntitlementsResponse`, `RedeemCreditsResponse`, `IAPVerifyResponse`.
+    - `ios/Sources/BibleTherapistCore/Networking/APIClient.swift`: added `paywallRequired` error case + 402 handling, generic GET helper, `getEntitlements()`, `redeemCredits()`, `verifyIAP()`, `syncIAP()`.
+    - Tests: **5/5 unit tests passing** (derived state defaults, product IDs, snapshot/credits/IAP response decoding). All **29/29 iOS tests pass** (10 ChatViewModel + 5 EntitlementsStore + 14 SSEParser).
+  - Dependencies met: P1-01 (GET /v1/entitlements), P1-02 (POST /v1/credits/redeem), P1-04 (POST /v1/iap/verify + /sync).
+  - Definition of done: **Integrated** ✅ — all unit tests pass, swift build + swift test green.
+  - **Commit: 8aa5aa4 on main (2026-02-25)**
 
 ### Batch C (after P1-01 + P2-01)
 
@@ -230,3 +246,4 @@
   - Deliverables: `app/crypto.py` (AES-256-GCM + HKDF-SHA256), `tests/test_crypto.py` (17 passing), `docs/KEY_MANAGEMENT.md`, `config.py` production guard.
   - Definition of done: **Integrated** ✅ (code merged). Ship-ready blocked on B003 (Security Review signoff).
   - **Merged to main: 2026-02-23 — SHA 4ff5840 (Orchestrator merge run)**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
