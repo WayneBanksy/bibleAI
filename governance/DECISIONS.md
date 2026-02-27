@@ -171,3 +171,17 @@ If ML Engineer determines different model, dimensions, or index params are neede
 - `top_k_verses`: 5–12 (exact value tunable post-MVP via eval harness)
 - `top_k_devotionals`: 3–8 (exact value tunable post-MVP)
 - Optional rerank: semantic score + theology tags (implementation details deferred to T009)
+
+---
+
+## D015 — iOS Build Guardian Role & Automated Pre-Merge Gate
+
+- **Date:** 2026-02-27
+- **Status:** LOCKED
+- **Owner:** iOS Engineer (Lead)
+- **Decision:** The iOS Engineer (Lead) is permanently assigned as Build Guardian. All PRs touching `ios/` must pass `scripts/verify_ios_build.sh` (exit code 0) before merge. Failures trigger a defined escalation protocol (see `governance/ORCHESTRATOR_POLICY_build_guardian.md`).
+- **Rationale:** Repeated build failures from directory duplication and cross-agent changes demonstrated the need for automated enforcement and clear ownership of build integrity.
+- **Implications:**
+  - Orchestrator must run the gate script before merging any PR that modifies `ios/`.
+  - iOS Engineer has authority to block any PR that fails the gate.
+  - Escalation protocol: Level 1 (self-fix) → Level 2 (cross-agent blocking task) → Level 3 (Project Owner).

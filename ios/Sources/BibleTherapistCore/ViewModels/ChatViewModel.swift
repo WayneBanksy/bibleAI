@@ -25,7 +25,7 @@ public final class ChatViewModel: ObservableObject {
     /// When true, the input bar and send button are disabled.
     @Published public internal(set) var inputBlocked: Bool = false
     /// Non-nil while a risk.interrupt modal should be shown.
-    @Published public internal(set) var riskInterrupt: RiskInterruptPayload? = nil
+    @Published public var riskInterrupt: RiskInterruptPayload? = nil
     @Published public internal(set) var sessionId: UUID? = nil
     @Published public internal(set) var connectionState: ConnectionState = .disconnected
     @Published public var errorMessage: String? = nil
@@ -49,7 +49,7 @@ public final class ChatViewModel: ObservableObject {
     /// Tracks the client_message_id of the in-flight user message.
     private var pendingClientMessageId: UUID? = nil
 
-    private let service: SessionServiceProtocol
+    public let service: SessionServiceProtocol
     private let sseClient: SSEClient
 
     // MARK: - Init

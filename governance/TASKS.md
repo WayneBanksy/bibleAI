@@ -246,4 +246,23 @@
   - Deliverables: `app/crypto.py` (AES-256-GCM + HKDF-SHA256), `tests/test_crypto.py` (17 passing), `docs/KEY_MANAGEMENT.md`, `config.py` production guard.
   - Definition of done: **Integrated** ✅ (code merged). Ship-ready blocked on B003 (Security Review signoff).
   - **Merged to main: 2026-02-23 — SHA 4ff5840 (Orchestrator merge run)**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
+- [x] T-BUILDFIX-001 Fix iOS build error + wire app entry point — Owner: **iOS Engineer (Lead)**
+  - Work packet: `governance/work_packets/WP_IOS_BUILDFIX_001.md`
+  - Branch: `main` (direct fix — blocking)
+  - Fixes applied:
+    - `BibleAIApp.swift`: wired `APIClient` → `AuthStore` → `ChatViewModel` → `ContentView` dependency chain + `.environmentObject(authStore)`.
+    - `ChatViewModel.swift`: `service` visibility changed from `private` to `public` (cross-module access from `MessageBubble.ReportSheet`).
+    - `ChatViewModel.swift`: `riskInterrupt` changed from `internal(set)` to `public` (cross-module `Binding` from `ChatView.$vm.riskInterrupt`).
+    - `MessageBubble.swift`: added `import Combine` (required for `Timer.publish`).
+    - `PaywallView.swift`: added `import BibleTherapistCore` (required for `StoreKitManager`/`EntitlementsStore`).
+  - Verification: `./scripts/verify_ios_build.sh` → **BUILD SUCCEEDED** (exit 0). `swift test` → **29/29 passing**.
+  - Definition of done: **Integrated** ✅
+
+---
+
+### T-BUILD-GUARDIAN: iOS Build Guardian Standing Assignment
+- **Status:** ACTIVE (permanent)
+- **Owner:** iOS Engineer (Lead)
+- **Decision:** D015 (LOCKED)
+- **Summary:** Ongoing responsibility to verify iOS build integrity on every PR touching `ios/`. Includes running pre-merge gate script, approving `ios/` merges, and escalating cross-agent build breaks per `governance/ORCHESTRATOR_POLICY_build_guardian.md`.
