@@ -105,7 +105,7 @@ public final class APIClient: SessionServiceProtocol, @unchecked Sendable {
 
     public func createSession(
         mode: SessionMode,
-        translationPreference: TranslationID = .niv,
+        translationPreference: TranslationID = .kjv,
         tonePreference: TonePreference = .reflective
     ) async throws -> SessionResponse {
         struct Body: Encodable {

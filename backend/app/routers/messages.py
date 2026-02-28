@@ -75,7 +75,7 @@ async def send_message(
         id=assistant_msg_id,
         session_id=session_id,
         role="assistant",
-        model_version="stub-v1",
+        model_version="pending",
     )
     db.add(assistant_msg)
 
@@ -111,6 +111,8 @@ async def send_message(
         assistant_msg_id,
         body.text,
         db,
+        translation_preference=session.translation_preference or "KJV",
+        session_mode=session.mode,
     )
 
     return SendMessageAccepted(

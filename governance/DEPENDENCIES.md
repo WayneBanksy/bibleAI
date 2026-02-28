@@ -19,17 +19,16 @@
 
 ---
 
-### B002 — Crisis template v1 lacks written Mental Health Advisor signoff
+### ~~B002 — Crisis template v1 lacks written Mental Health Advisor signoff~~ — RESOLVED
 
 - **ID:** B002
-- **blocked_task:** T007 crisis path implementation; ship-ready label
-- **blocked_owner:** Backend Engineer
-- **blocked_by:** Mental Health Advisor
-- **needed_artifact:** Written approval of crisis template v1 copy (SAFETY_POLICY.md §2.3). Record approval in TASKS.md T012 and DECISIONS.md D009.
-- **why_blocked:** Crisis response copy in `risk.interrupt` events must be clinically reviewed before production. This is a non-negotiable safety gate.
-- **fallback_assumption:** None. No acceptable fallback. Ship is blocked until resolved.
-- **deadline:** Before ship-ready label is applied.
-- **status:** open
+- **status:** resolved
+- **resolved_by:** Project Owner signoff (2026-02-28)
+- **resolution:** Project Owner approved SAFETY_POLICY.md §2.3 crisis template v1. Template includes: acknowledgment of pain, not-a-substitute statement, 3 crisis resources (988, Crisis Text Line, 911), encouragement to seek help, safety check option.
+- **artifacts updated:**
+  - DECISIONS.md D009 — status changed from PROVISIONAL to LOCKED
+  - TASKS.md T012 — marked complete
+  - `backend/app/pipeline.py` — CRISIS_TEMPLATE_PLACEHOLDER replaced with approved copy
 
 ---
 

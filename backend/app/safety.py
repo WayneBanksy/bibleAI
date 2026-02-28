@@ -1,14 +1,21 @@
 """
-Safety classifier: keyword-based stub for dev/testing.
+Safety classifiers: keyword pre-check + Claude LLM post-check.
 
-Architecture: SafetyClassifier protocol allows swapping to a real ML
-classifier (T015) without changing the pipeline call sites.
+Architecture:
+  - KeywordSafetyClassifier: fast, synchronous keyword regex (pre-check)
+  - LLMSafetyClassifier: thorough, Claude-powered analysis (post-check)
+  - SafetyClassifier protocol allows injection in pipeline call sites.
 """
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from typing import Protocol, runtime_checkable
+
+import structlog
+
+log = structlog.get_logger()
 
 
 # ---------------------------------------------------------------------------
@@ -114,5 +121,125 @@ class KeywordSafetyClassifier:
         )
 
 
-# Module-level singleton used by the pipeline.
+# ---------------------------------------------------------------------------
+# LLM-based safety classifier (post-check — Claude powered)
+# ---------------------------------------------------------------------------
+
+_SAFETY_SYSTEM_PROMPT = """You are a safety classifier for a Bible-grounded reflection app.
+Your job is to analyze text (either user messages or assistant-generated responses) for safety violations.
+
+You MUST return valid JSON only. No surrounding text.
+
+## JSON Schema
+{
+  "risk_level": "none" | "low" | "medium" | "high",
+  "categories": ["self_harm", "abuse", "medical_advice", "hate", "sexual", "violence", "spiritual_coercion", "citation_integrity"],
+  "action": "allow" | "caution" | "refuse" | "escalate",
+  "rationale_codes": ["short_code_1", "short_code_2"]
+}
+
+## Classification Rules
+
+### ESCALATE (risk_level: "high", action: "escalate"):
+- Active suicidal ideation or self-harm intent
+- Statements about wanting to die or end their life
+- Disclosure of ongoing abuse (child, domestic, elder)
+- Imminent danger to self or others
+
+### REFUSE (risk_level: "medium", action: "refuse"):
+- Requests for specific medical/psychiatric diagnosis
+- Requests for medication advice or dosage information
+- Content that provides treatment recommendations
+- Assistant output containing prohibited clinical language (diagnosis, treatment plans)
+- Assistant output containing spiritual coercion (divine punishment threats, shame spirals, "you must believe or else")
+
+### CAUTION (risk_level: "low", action: "caution"):
+- Mentions of trauma, abuse history (non-imminent)
+- General anxiety, depression references
+- Assistant output with mildly prescriptive religious language
+
+### ALLOW (risk_level: "none", action: "allow"):
+- General life questions, spiritual curiosity
+- Grief, sadness, loneliness (non-crisis)
+- Normal faith discussion
+
+## Critical: For assistant output post-check, also flag:
+- Diagnostic language ("You have depression", "You may be bipolar")
+- Treatment advice ("Try CBT", "See a trauma therapist")
+- Spiritual coercion ("God will punish you", "You must have more faith")
+- Divine certainty claims ("God told me you will be healed")
+- Proof-texting to dismiss grief or trauma
+"""
+
+
+class LLMSafetyClassifier:
+    """
+    Claude-powered safety classifier for thorough post-check analysis.
+
+    Used as the post-check stage in the pipeline to catch:
+    - Subtle crisis signals missed by keyword matching
+    - Prohibited clinical language in assistant output
+    - Spiritual coercion patterns in assistant output
+    """
+
+    def __init__(self, api_key: str | None = None):
+        self._api_key = api_key
+
+    def _get_client(self):
+        """Lazy import to avoid circular dependency with config."""
+        import anthropic
+        from app.config import settings
+        key = self._api_key or settings.anthropic_api_key
+        return anthropic.Anthropic(api_key=key)
+
+    def classify(self, text: str) -> SafetyCheckResult:
+        """
+        Classify text using Claude for thorough safety analysis.
+        Falls back to allow on any error (fail-open for post-check;
+        keyword pre-check already caught obvious signals).
+        """
+        try:
+            return self._classify_with_llm(text)
+        except Exception as exc:
+            log.warning("safety.llm_classifier_error", error=str(exc))
+            # Fail-open: keyword pre-check already ran
+            return SafetyCheckResult(
+                risk_level="none",
+                categories=[],
+                action="allow",
+                rationale_codes=["llm_classifier_error"],
+            )
+
+    def _classify_with_llm(self, text: str) -> SafetyCheckResult:
+        """Make the actual Claude API call for safety classification."""
+        client = self._get_client()
+
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",  # Fast + cheap for classification
+            max_tokens=200,
+            system=_SAFETY_SYSTEM_PROMPT,
+            messages=[{
+                "role": "user",
+                "content": f"Classify the following text for safety:\n\n{text}",
+            }],
+            timeout=10.0,
+        )
+
+        raw_text = ""
+        for block in response.content:
+            if block.type == "text":
+                raw_text += block.text
+
+        parsed = json.loads(raw_text)
+
+        return SafetyCheckResult(
+            risk_level=parsed.get("risk_level", "none"),
+            categories=parsed.get("categories", []),
+            action=parsed.get("action", "allow"),
+            rationale_codes=[f"llm:{code}" for code in parsed.get("rationale_codes", [])],
+        )
+
+
+# Module-level singletons used by the pipeline.
 default_classifier: SafetyClassifier = KeywordSafetyClassifier()
+llm_classifier: LLMSafetyClassifier = LLMSafetyClassifier()

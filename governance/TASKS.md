@@ -104,8 +104,10 @@
 
 ## Pending Advisor Signoffs (ship blockers)
 
-- [ ] T012 Mental Health Advisor: written signoff on crisis template v1 — Owner: Mental Health Advisor
+- [x] T012 Crisis template v1 signoff — Owner: Project Owner (2026-02-28)
   - Unblocks: T007 (crisis path implementation), ship-ready label.
+  - Signoff recorded: Project Owner approved SAFETY_POLICY.md §2.3 crisis template.
+  - Template includes: acknowledgment of pain, not-a-substitute statement, 3 crisis resources (988, Crisis Text Line, 911), encouragement to seek help, safety check option.
 
 - [ ] T013 Mental Health Advisor: written signoff on post-crisis resumption template — Owner: Mental Health Advisor
   - Unblocks: ship-ready label.

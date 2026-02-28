@@ -105,3 +105,37 @@ struct ChatView: View {
         }
     }
 }
+
+// MARK: - Preview
+
+/// Stub service for SwiftUI previews. Methods are never called because
+/// the preview sets sessionId, so ChatView's .task guard exits early.
+private struct PreviewService: SessionServiceProtocol {
+    func createSession(mode: SessionMode, translationPreference: TranslationID, tonePreference: TonePreference) async throws -> SessionResponse {
+        fatalError("Preview only")
+    }
+    func sendMessage(sessionId: UUID, text: String, clientMessageId: UUID) async throws -> MessageAccepted {
+        fatalError("Preview only")
+    }
+    func submitReport(sessionId: UUID, messageId: UUID, reason: ReportReason, details: String?) async throws -> ReportResponse {
+        fatalError("Preview only")
+    }
+    func sseURL(sessionId: UUID, lastEventId: String?) -> URL {
+        URL(string: "http://localhost:8000/v1/sessions/\(sessionId)/events")!
+    }
+    func authHeaders() -> [String: String] { [:] }
+}
+
+#Preview {
+    let vm = ChatViewModel(
+        service: PreviewService(),
+        previewMessages: [
+            ChatMessage(role: .user, text: "I've been feeling anxious about the future."),
+            ChatMessage(role: .assistant, text: "It's understandable to feel that way. Many people find comfort in reflecting on scripture during uncertain times. One verse that speaks to this is about not worrying about tomorrow, for tomorrow will worry about itself."),
+            ChatMessage(role: .user, text: "That helps. Can you share a prayer?"),
+        ],
+        sessionId: UUID()
+    )
+    ChatView()
+        .environmentObject(vm)
+}

@@ -22,6 +22,7 @@ struct ContentView: View {
             } else if !authStore.isAuthenticated {
                 ProgressView("Connecting…")
                     .padding()
+                    .task { devAutoAuth() }
             } else {
                 ChatView()
                     .environmentObject(chatViewModel)
@@ -29,5 +30,14 @@ struct ContentView: View {
         }
         .animation(.easeInOut, value: disclaimerAccepted)
         .animation(.easeInOut, value: authStore.isAuthenticated)
+    }
+
+    /// In DEBUG builds, auto-inject a dev token to bypass auth when no backend is running.
+    private func devAutoAuth() {
+        #if DEBUG
+        if !authStore.isAuthenticated {
+            authStore.setTokenDirect("dev-debug-token")
+        }
+        #endif
     }
 }

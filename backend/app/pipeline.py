@@ -7,14 +7,12 @@ Stages (in order):
   3. llm_call   — call LLM provider (Claude/stub) via provider abstraction
   4. validate   — parse + schema-validate LLM output
   5. citations  — validate verse_block against bible_verses DB (T010)
-  6. post_check — safety post-check on generated reflection
+  6. post_check — safety post-check on generated reflection (keyword + LLM)
   7. emit       — stream token.delta events then message.final
 
 B002 compliance
 ---------------
-⚠️  PLACEHOLDER — DO NOT SHIP without T012 (Mental Health Advisor) signoff.
-    Replace CRISIS_TEMPLATE_PLACEHOLDER with reviewed copy from
-    SAFETY_POLICY.md §2.3 after T012 is resolved.
+Crisis template uses reviewed copy from SAFETY_POLICY.md §2.3 (T012 signed off).
 """
 from __future__ import annotations
 
@@ -39,7 +37,7 @@ from app.llm import (
 )
 from app.models import Message, SafetyEvent, VerseCitation
 from app.prompting.default_prompt import DEFAULT_SYSTEM_PROMPT, build_user_prompt
-from app.safety import SafetyCheckResult, SafetyClassifier, default_classifier
+from app.safety import SafetyCheckResult, SafetyClassifier, default_classifier, llm_classifier
 from app.schemas import (
     CitationPayload,
     MessageFinalPayload,
@@ -55,19 +53,22 @@ from app.streaming import _sse
 log = structlog.get_logger()
 
 # ---------------------------------------------------------------------------
-# B002 — Crisis template placeholder
-# ⚠️  DO NOT REPLACE until T012 (Mental Health Advisor) signoff is recorded
-#      in governance/TASKS.md T012.
+# B002 — Crisis template v1 (approved per SAFETY_POLICY.md §2.3, T012 signoff)
 # ---------------------------------------------------------------------------
-CRISIS_TEMPLATE_PLACEHOLDER = (
-    "[CRISIS RESPONSE COPY PENDING CLINICAL REVIEW — T012 REQUIRED BEFORE SHIP]"
+CRISIS_TEMPLATE = (
+    "It sounds like you're going through something really painful right now. "
+    "I'm not a crisis counselor or emergency service \u2014 please reach out to "
+    "someone who can help. You can contact the 988 Suicide & Crisis Lifeline "
+    "(call or text 988), the Crisis Text Line (text HOME to 741741), or call "
+    "911 if you or someone else is in immediate danger. Talking to a trusted "
+    "person or licensed professional can make a real difference. "
+    "Are you safe right now?"
 )
 CRISIS_RESOURCES: list[dict[str, str]] = [
     {"label": "988 Suicide & Crisis Lifeline", "contact": "Call or text 988"},
     {"label": "Crisis Text Line", "contact": "Text HOME to 741741"},
     {"label": "Emergency Services", "contact": "Call 911"},
 ]
-
 
 
 # ---------------------------------------------------------------------------
@@ -84,6 +85,8 @@ async def run_pipeline(
     db: AsyncSession,
     queue: asyncio.Queue,
     classifier: SafetyClassifier = default_classifier,
+    translation_preference: str = "KJV",
+    session_mode: str = "support_session",
 ) -> None:
     """
     Full message processing pipeline. Puts SSE event strings into `queue`.
@@ -229,8 +232,12 @@ async def run_pipeline(
 
         # ------------------------------------------------------------------
         # 6. Post-check (on generated reflection)
+        #    First: keyword check (fast), then: LLM check (thorough)
         # ------------------------------------------------------------------
         post_result = classifier.classify(reflection)
+        if post_result.action == "allow":
+            # Keyword check passed — run thorough LLM post-check
+            post_result = llm_classifier.classify(reflection)
         if post_result.action in ("refuse", "escalate"):
             await _log_safety_event(
                 db, assistant_message_id, "post", post_result, model_version
@@ -378,7 +385,7 @@ async def _emit_risk_interrupt(
         risk_level=result.risk_level,
         action="escalate",
         categories=result.categories,
-        message=CRISIS_TEMPLATE_PLACEHOLDER,
+        message=CRISIS_TEMPLATE,
         resources=[ResourceItem(**r) for r in CRISIS_RESOURCES],
         requires_acknowledgment=True,
     )

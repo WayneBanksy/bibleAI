@@ -11,6 +11,24 @@ public enum TranslationID: String, Codable, CaseIterable, Sendable {
     case nkjv = "NKJV"
     case nlt = "NLT"
     case csb = "CSB"
+
+    /// Whether this translation is available in the current MVP release.
+    /// Only KJV is available for MVP; other translations show "Coming Soon".
+    public var isAvailable: Bool {
+        self == .kjv
+    }
+
+    /// Human-readable display name for the translation.
+    public var displayName: String {
+        switch self {
+        case .esv: return "English Standard Version"
+        case .niv: return "New International Version"
+        case .kjv: return "King James Version"
+        case .nkjv: return "New King James Version"
+        case .nlt: return "New Living Translation"
+        case .csb: return "Christian Standard Bible"
+        }
+    }
 }
 
 public enum SessionMode: String, Codable, Sendable {

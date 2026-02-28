@@ -1,5 +1,5 @@
 """
-T007 pipeline tests.
+Pipeline tests.
 
 Tests the full message pipeline SSE output via direct calls to run_pipeline.
 DB persistence helpers are patched to avoid triggering SQLAlchemy mapper
@@ -20,12 +20,12 @@ import asyncio
 import json
 import uuid
 from typing import Any
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
 from app.pipeline import (
-    CRISIS_TEMPLATE_PLACEHOLDER,
+    CRISIS_TEMPLATE,
     CRISIS_RESOURCES,
     run_pipeline,
 )
@@ -88,6 +88,31 @@ def _no_db_patches():
     return stack
 
 
+def _mock_llm_provider():
+    """Create a mock LLM provider that returns a valid stub response."""
+    from app.llm.provider import LLMResponse
+
+    mock_json = json.dumps({
+        "reflection": (
+            "You are not alone in what you're feeling. "
+            "Scripture reminds us that God is close to the brokenhearted."
+        ),
+        "verse_block": [],
+        "prayer": "Lord, draw near to those who are hurting.",
+        "next_step": "Consider sharing what you're carrying with a trusted friend.",
+        "reflection_question": "What would it feel like to let yourself be fully known?",
+    })
+
+    mock_provider = MagicMock()
+    mock_provider.generate = AsyncMock(
+        return_value=LLMResponse(
+            raw_json=mock_json,
+            model_version="mock-v1",
+        )
+    )
+    return mock_provider
+
+
 # ---------------------------------------------------------------------------
 # 1. Escalate path
 # ---------------------------------------------------------------------------
@@ -99,12 +124,15 @@ async def test_escalate_path_no_llm():
     """
     queue = asyncio.Queue()
 
-    from unittest.mock import MagicMock as _MagicMock
-    mock_provider = _MagicMock()
+    mock_provider = MagicMock()
     mock_provider.generate = AsyncMock(side_effect=AssertionError("LLM must not be called on escalate"))
 
     with _no_db_patches(), \
-         patch("app.pipeline.get_llm_provider", return_value=mock_provider):
+         patch("app.pipeline.get_llm_provider", return_value=mock_provider), \
+         patch("app.pipeline.llm_classifier") as mock_llm_clf:
+        mock_llm_clf.classify.return_value = SafetyCheckResult(
+            risk_level="none", categories=[], action="allow"
+        )
         await run_pipeline(
             session_id=uuid.uuid4(),
             user_id=uuid.uuid4(),
@@ -122,7 +150,7 @@ async def test_escalate_path_no_llm():
     interrupt = events[0]["data"]
     assert interrupt["action"] == "escalate"
     assert interrupt["requires_acknowledgment"] is True
-    assert interrupt["message"] == CRISIS_TEMPLATE_PLACEHOLDER
+    assert interrupt["message"] == CRISIS_TEMPLATE
     assert len(interrupt["resources"]) == len(CRISIS_RESOURCES)
     assert "self_harm" in interrupt["categories"]
 
@@ -132,12 +160,15 @@ async def test_escalate_violence_path():
     """Violence keyword also produces risk.interrupt with no LLM invocation."""
     queue = asyncio.Queue()
 
-    from unittest.mock import MagicMock as _MagicMock
-    mock_provider = _MagicMock()
+    mock_provider = MagicMock()
     mock_provider.generate = AsyncMock(side_effect=AssertionError("LLM must not be called"))
 
     with _no_db_patches(), \
-         patch("app.pipeline.get_llm_provider", return_value=mock_provider):
+         patch("app.pipeline.get_llm_provider", return_value=mock_provider), \
+         patch("app.pipeline.llm_classifier") as mock_llm_clf:
+        mock_llm_clf.classify.return_value = SafetyCheckResult(
+            risk_level="none", categories=[], action="allow"
+        )
         await run_pipeline(
             session_id=uuid.uuid4(),
             user_id=uuid.uuid4(),
@@ -203,7 +234,12 @@ async def test_allow_path_delta_then_final():
     queue = asyncio.Queue()
 
     with _no_db_patches(), \
-         patch("app.pipeline.validate_citations", new_callable=AsyncMock, return_value=[]):
+         patch("app.pipeline.get_llm_provider", return_value=_mock_llm_provider()), \
+         patch("app.pipeline.validate_citations", new_callable=AsyncMock, return_value=[]), \
+         patch("app.pipeline.llm_classifier") as mock_llm_clf:
+        mock_llm_clf.classify.return_value = SafetyCheckResult(
+            risk_level="none", categories=[], action="allow"
+        )
         await run_pipeline(
             session_id=uuid.uuid4(),
             user_id=uuid.uuid4(),
@@ -245,7 +281,12 @@ async def test_allow_path_hello():
     queue = asyncio.Queue()
 
     with _no_db_patches(), \
-         patch("app.pipeline.validate_citations", new_callable=AsyncMock, return_value=[]):
+         patch("app.pipeline.get_llm_provider", return_value=_mock_llm_provider()), \
+         patch("app.pipeline.validate_citations", new_callable=AsyncMock, return_value=[]), \
+         patch("app.pipeline.llm_classifier") as mock_llm_clf:
+        mock_llm_clf.classify.return_value = SafetyCheckResult(
+            risk_level="none", categories=[], action="allow"
+        )
         await run_pipeline(
             session_id=uuid.uuid4(),
             user_id=uuid.uuid4(),
@@ -276,11 +317,16 @@ async def test_citation_gate_error_does_not_raise():
     queue = asyncio.Queue()
 
     with _no_db_patches(), \
+         patch("app.pipeline.get_llm_provider", return_value=_mock_llm_provider()), \
          patch(
              "app.pipeline.validate_citations",
              new_callable=AsyncMock,
              side_effect=ImportError("citation module unavailable"),
-         ):
+         ), \
+         patch("app.pipeline.llm_classifier") as mock_llm_clf:
+        mock_llm_clf.classify.return_value = SafetyCheckResult(
+            risk_level="none", categories=[], action="allow"
+        )
         await run_pipeline(
             session_id=uuid.uuid4(),
             user_id=uuid.uuid4(),

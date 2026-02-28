@@ -46,6 +46,8 @@ async def publish_real_stream(
     assistant_message_id: uuid.UUID,
     text: str,
     db,  # AsyncSession — imported lazily to avoid circular import
+    translation_preference: str = "KJV",
+    session_mode: str = "support_session",
 ) -> None:
     """
     Background task: run the real pipeline and stream events into the session queue.
@@ -62,6 +64,8 @@ async def publish_real_stream(
         text=text,
         db=db,
         queue=q,
+        translation_preference=translation_preference,
+        session_mode=session_mode,
     )
 
 

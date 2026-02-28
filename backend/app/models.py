@@ -240,6 +240,36 @@ class CreditLedger(Base):
     user: Mapped["User"] = relationship(back_populates="credit_ledger_entries")
 
 
+class AnalyticsEvent(Base):
+    __tablename__ = "analytics_events"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    event_name: Mapped[str] = mapped_column(Text, nullable=False)
+    session_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+    properties: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+
+
+class Report(Base):
+    __tablename__ = "reports"
+    __table_args__ = (
+        CheckConstraint("status IN ('open','reviewed','closed')", name="ck_reports_status"),
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
+    session_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("sessions.id"), nullable=False)
+    message_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("messages.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    reason: Mapped[str] = mapped_column(Text, nullable=False)
+    details_hash: Mapped[str | None] = mapped_column(Text, nullable=True)
+    status: Mapped[str] = mapped_column(Text, nullable=False, default="open")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
+
+    session: Mapped["Session"] = relationship(back_populates="reports")
+    user: Mapped["User"] = relationship(back_populates="reports")
+
+
 class IAPTransaction(Base):
     __tablename__ = "iap_transactions"
     __table_args__ = (
@@ -270,33 +300,3 @@ class IAPTransaction(Base):
     raw_payload: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
     user: Mapped["User"] = relationship(back_populates="iap_transactions")
-
-
-class AnalyticsEvent(Base):
-    __tablename__ = "analytics_events"
-
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    event_name: Mapped[str] = mapped_column(Text, nullable=False)
-    session_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
-    properties: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
-
-
-class Report(Base):
-    __tablename__ = "reports"
-    __table_args__ = (
-        CheckConstraint("status IN ('open','reviewed','closed')", name="ck_reports_status"),
-    )
-
-    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=_uuid)
-    session_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("sessions.id"), nullable=False)
-    message_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("messages.id"), nullable=False)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    reason: Mapped[str] = mapped_column(Text, nullable=False)
-    details_hash: Mapped[str | None] = mapped_column(Text, nullable=True)
-    status: Mapped[str] = mapped_column(Text, nullable=False, default="open")
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, default=_now)
-
-    session: Mapped["Session"] = relationship(back_populates="reports")
-    user: Mapped["User"] = relationship(back_populates="reports")

@@ -17,8 +17,6 @@ import Combine
 public final class ChatViewModel: ObservableObject {
 
     // MARK: - Published State
-    // Setters are `internal(set)` so @testable import can set state in unit tests.
-    // Public getters allow SwiftUI views to observe changes.
 
     @Published public internal(set) var messages: [ChatMessage] = []
     @Published public internal(set) var isStreaming: Bool = false
@@ -59,11 +57,19 @@ public final class ChatViewModel: ObservableObject {
         self.sseClient = sseClient
     }
 
+    /// Preview/test convenience initializer that pre-populates messages and session state.
+    public init(service: SessionServiceProtocol, sseClient: SSEClient = SSEClient(), previewMessages: [ChatMessage], sessionId: UUID? = nil) {
+        self.service = service
+        self.sseClient = sseClient
+        self.messages = previewMessages
+        self.sessionId = sessionId
+    }
+
     // MARK: - Session Lifecycle
 
     public func createSession(
         mode: SessionMode = .supportSession,
-        translation: TranslationID = .niv,
+        translation: TranslationID = .kjv,
         tone: TonePreference = .reflective
     ) async {
         do {
