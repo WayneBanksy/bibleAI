@@ -44,7 +44,11 @@ struct ChatView: View {
                 VStack(spacing: 0) {
                     Divider()
                     InputBar(isDisabled: vm.inputBlocked || vm.isStreaming) { text in
+                        #if DEV_PREVIEW
+                        Task { await vm.simulateStreamingResponse(for: text) }
+                        #else
                         Task { await vm.sendMessage(text) }
+                        #endif
                     }
                     .padding(.bottom, 4)
                 }
@@ -86,6 +90,18 @@ struct ChatView: View {
         .task {
             guard vm.sessionId == nil else { return }
             await vm.createSession()
+
+            #if DEV_PREVIEW
+            // Inject a welcome message so the user sees the app is alive.
+            if vm.messages.isEmpty {
+                let welcome = ChatMessage(
+                    role: .assistant,
+                    text: "Welcome to BibleAI (Dev Preview). Share what's on your heart, and I'll offer a scripture-grounded reflection.",
+                    isStreaming: false
+                )
+                vm.messages.append(welcome)
+            }
+            #endif
         }
     }
 }

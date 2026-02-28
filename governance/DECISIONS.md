@@ -185,3 +185,22 @@ If ML Engineer determines different model, dimensions, or index params are neede
   - Orchestrator must run the gate script before merging any PR that modifies `ios/`.
   - iOS Engineer has authority to block any PR that fails the gate.
   - Escalation protocol: Level 1 (self-fix) → Level 2 (cross-agent blocking task) → Level 3 (Project Owner).
+
+---
+
+## D016 — LLM Provider Selection (Hybrid Strategy)
+
+- **Date:** 2026-02-28
+- **Status:** LOCKED
+- **Owner:** Project Owner
+- **Decision:** Claude (Anthropic) as the LLM provider for MVP. Hybrid strategy: Claude for production now, fine-tune Llama for self-hosting later.
+- **Provider abstraction:** `backend/app/llm/` package with `LLMProvider` abstract base class. Providers are swappable via `LLM_PROVIDER` env var (`"anthropic"` or `"stub"`).
+- **Model:** `claude-sonnet-4-20250514` (default; configurable via `ANTHROPIC_MODEL` env var).
+- **Collect-then-stream:** Full LLM response is collected, validated (safety + citations), then streamed to client. Ensures no unsafe content reaches the user.
+- **Rationale:** Claude provides high-quality structured JSON output, strong safety alignment, and fast iteration. Provider abstraction enables future migration to self-hosted Llama without code rewrite.
+- **Implications:**
+  - `ANTHROPIC_API_KEY` must be provisioned in deployment env.
+  - Cost monitoring via logged token usage (input_tokens, output_tokens, latency_ms).
+  - RAG context injected via XML tags in user prompt (`<retrieved_verses>`).
+  - StubProvider preserved for tests and CI (no API key required).
+- **Revisit trigger:** Cost exceeds budget thresholds, or Llama fine-tune achieves quality parity on eval harness.

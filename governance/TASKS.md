@@ -259,6 +259,38 @@
   - Verification: `./scripts/verify_ios_build.sh` → **BUILD SUCCEEDED** (exit 0). `swift test` → **29/29 passing**.
   - Definition of done: **Integrated** ✅
 
+- [x] T-AC001 Restore deleted backend files — Owner: **Project Owner**
+  - AC-001 critical: commit 8aa5aa4 deleted ~60 backend files.
+  - Restored from 0eeeb17 (last known-good state). Preserved HEAD versions of main.py, models.py, schemas.py (contain Batch B IAP additions).
+  - All 8 routers, alembic migrations 0001-0004, pyproject.toml, Docker config, tests, eval harness restored.
+  - Definition of done: **Integrated** ✅
+  - **Resolved: 2026-02-28**
+
+- [x] T-LLM-001 Claude (Anthropic) LLM Integration — Owner: **Project Owner**
+  - Decision: D016 (LOCKED)
+  - Deliverables:
+    - `backend/app/llm/` package: LLMProvider abstraction, ClaudeProvider, StubProvider, factory, error hierarchy.
+    - `backend/app/config.py`: LLM settings (llm_provider, anthropic_api_key, anthropic_model, timeouts, RAG top_k).
+    - `backend/app/pipeline.py`: stage 3 replaced with provider call (was hard-coded stub).
+    - `backend/app/prompting/default_prompt.py`: enhanced system prompt for Claude (citation rules, safety, invitational tone).
+    - `backend/pyproject.toml`: anthropic SDK dependency added.
+    - `backend/tests/test_llm_provider.py`: provider tests (stub, Claude mock, factory, errors).
+    - `backend/tests/test_pipeline_with_provider.py`: pipeline integration tests with error handling.
+  - StubProvider (default) ensures all existing tests pass without API key.
+  - To activate Claude: set `LLM_PROVIDER=anthropic` + `ANTHROPIC_API_KEY=sk-...` in env.
+  - Definition of done: **Integrated** ✅
+  - **Resolved: 2026-02-28**
+
+- [x] T-IOS-DEVPREVIEW iOS Dev Preview Mode — Owner: **Project Owner**
+  - Compile-time `DEV_PREVIEW` flag (Debug config only) + `#if DEBUG` mock types.
+  - MockSessionService + MockSSEProvider in `ios/Sources/BibleTherapistCore/Mocks/`.
+  - ChatViewModel `simulateStreamingResponse()` for word-by-word mock streaming.
+  - BibleAIApp.swift: injects mocks and bypasses auth when DEV_PREVIEW is active.
+  - ChatView.swift: welcome message + mock send intercept.
+  - Triple guard: `#if DEBUG` on mocks, `#if DEV_PREVIEW` on wiring, Release build strips all.
+  - Definition of done: **Integrated** ✅
+  - **Resolved: 2026-02-28**
+
 ---
 
 ### T-BUILD-GUARDIAN: iOS Build Guardian Standing Assignment

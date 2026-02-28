@@ -288,4 +288,52 @@ public final class ChatViewModel: ObservableObject {
         pendingClientMessageId = nil
     }
 }
+
+// MARK: - DEV_PREVIEW Support
+
+#if DEBUG
+extension ChatViewModel {
+
+    /// Simulates a streaming assistant response using MockSSEProvider.
+    /// Streams text word-by-word to mimic real SSE token.delta behavior.
+    public func simulateStreamingResponse(for userText: String) async {
+        let messageId = UUID()
+        let clientMessageId = UUID()
+
+        // Optimistically add user bubble
+        let userMsg = ChatMessage(clientMessageId: clientMessageId, role: .user, text: userText)
+        messages.append(userMsg)
+
+        // Streaming placeholder for assistant reply
+        let draftMsg = ChatMessage(serverId: messageId, role: .assistant, text: "", isStreaming: true)
+        messages.append(draftMsg)
+        currentDraftIndex = messages.count - 1
+        isStreaming = true
+
+        // Get mock response
+        let mockResponse = MockSSEProvider.response(for: userText)
+
+        // Stream word by word
+        let words = mockResponse.text.split(separator: " ")
+        for (i, word) in words.enumerated() {
+            try? await Task.sleep(nanoseconds: 50_000_000) // 50ms per word
+            guard let idx = currentDraftIndex else { break }
+            messages[idx].text += (i > 0 ? " " : "") + String(word)
+        }
+
+        // Commit final — attach citations and structured payload
+        if let idx = currentDraftIndex {
+            messages[idx].text = mockResponse.text
+            messages[idx].isStreaming = false
+            messages[idx].citations = mockResponse.citations
+            messages[idx].structured = mockResponse.structured
+            messages[idx].risk = RiskPayload(
+                riskLevel: .none, categories: [], action: .allow
+            )
+        }
+        currentDraftIndex = nil
+        isStreaming = false
+    }
+}
+#endif
 #endif
